@@ -1,6 +1,6 @@
 from typing import Callable, List
 
-from tinygrad.tinygrad import Tensor, nn
+from tinygrad import Tensor, nn
 
 
 # Change the ReLUs to SeLUs

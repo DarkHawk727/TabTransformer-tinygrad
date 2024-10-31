@@ -1,7 +1,17 @@
-import math
+import sys
+import os
 
-from tinygrad.tinygrad.engine.lazy import LazyBuffer
-from tinygrad.tinygrad.tensor import Function
+sys.path.append(os.path.abspath("."))
+
+import math
+from typing import Callable, List
+
+import numpy as np
+
+from tinygrad import Tensor, nn
+
+from tinygrad.engine.lazy import LazyBuffer
+from tinygrad.tensor import Function
 
 
 # https://github.com/pytorch/pytorch/blob/96aaa311c0251d24decb9dc5da4957b7c590af6f/torch/nn/modules/activation.py#L507

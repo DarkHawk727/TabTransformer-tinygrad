@@ -1,4 +1,5 @@
 .mypy_cache
+__pycache__
 tinygrad
 venv
 2012.06678v1.pdf
