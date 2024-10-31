@@ -2,6 +2,8 @@ from typing import Callable, List
 
 from tinygrad import Tensor, nn
 
+from selu import Selu
+
 
 # Change the ReLUs to SeLUs
 class MLP:
@@ -9,10 +11,10 @@ class MLP:
         self.layers: List[Callable[[Tensor], Tensor]] = [
             nn.Linear(l, m1 * l),
             nn.BatchNorm(m1 * l),
-            Tensor.relu,
+            Selu.apply,
             nn.Linear(m1 * l, m2 * l),
             nn.BatchNorm(m2 * l),
-            Tensor.relu,
+            Selu.apply,
             nn.Linear(m2 * l, 1),
             Tensor.sigmoid,
         ]

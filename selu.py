@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.path.abspath("."))
 
@@ -7,9 +7,7 @@ import math
 from typing import Callable, List
 
 import numpy as np
-
 from tinygrad import Tensor, nn
-
 from tinygrad.engine.lazy import LazyBuffer
 from tinygrad.tensor import Function
 
