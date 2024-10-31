@@ -1,15 +1,15 @@
 from typing import List, Tuple
 
-import tinygrad.tinygrad.nn as nn
+import tinygrad.nn as nn
+from tinygrad import Tensor
+from transformer import Transformer
+
 from mlp import MLP
-from tinygrad.extra.models.transformer import Transformer
-from tinygrad.tinygrad.tensor import Tensor
 
 
 # Better way to do this?
 def split_features(dataset: Tensor, indices: List[int]) -> Tuple[Tensor, Tensor]:
-    all_indices = list(range(dataset.shape[1]))
-    continuous_indexes = [i for i in all_indices if i not in indices]
+    continuous_indexes = [i for i in list(range(dataset.shape[1])) if i not in indices]
 
     categorical_features = dataset[:, indices]
     continuous_features = dataset[:, continuous_indexes]

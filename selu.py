@@ -1,13 +1,5 @@
-import os
-import sys
-
-sys.path.append(os.path.abspath("."))
-
 import math
-from typing import Callable, List
 
-import numpy as np
-from tinygrad import Tensor, nn
 from tinygrad.engine.lazy import LazyBuffer
 from tinygrad.tensor import Function
 
@@ -18,15 +10,19 @@ class Selu(Function):
     _lambda: float = 1.0507009873554804934193349852946
 
     def forward(self, x: LazyBuffer) -> LazyBuffer:
-        self.ret = self._lambda * LazyBuffer.where(
-            x >= 0, x, self._alpha * ((x * (1 / math.log(2))).exp2() - 1)
+        alpha_buf = x.const_like(self._alpha)
+        lambda_buf = x.const_like(self._lambda)
+        self.ret = lambda_buf * LazyBuffer.where(
+            x >= 0, x, alpha_buf * ((x * (1 / math.log(2))).exp2() - 1)
         )
         return self.ret
 
     def backward(self, grad_output: LazyBuffer) -> LazyBuffer:
+        alpha_buf = self.ret.const_like(self._alpha)
+        lambda_buf = self.ret.const_like(self._lambda)
         dx = LazyBuffer.where(
             self.ret >= 0,
-            self._lambda,
-            self._lambda * self._alpha * (self.ret * (1 / math.log(2))).exp2(),
+            lambda_buf,
+            lambda_buf * alpha_buf * (self.ret * (1 / math.log(2))).exp2(),
         )
         return dx * grad_output

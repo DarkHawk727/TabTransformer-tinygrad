@@ -5,7 +5,6 @@ from tinygrad import Tensor, nn
 from selu import Selu
 
 
-# Change the ReLUs to SeLUs
 class MLP:
     def __init__(self, l: int, m1: int = 4, m2: int = 2) -> None:
         self.layers: List[Callable[[Tensor], Tensor]] = [
