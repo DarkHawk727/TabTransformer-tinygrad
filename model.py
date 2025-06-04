@@ -14,7 +14,9 @@ def split_features(dataset: Tensor, indices: List[int]) -> Tuple[Tensor, Tensor]
     categorical_features = dataset[:, indices]
     continuous_features = dataset[:, continuous_indexes]
 
-    return continuous_features, categorical_features
+    # return the features in the order (categorical, continuous) so callers can
+    # simply unpack as ``x_cat, x_cont = split_features(...)``
+    return categorical_features, continuous_features
 
 
 class TabTransformer:
@@ -26,7 +28,8 @@ class TabTransformer:
         )
         self.mlp = MLP(l=n_cat * 32 + n_cont)
         self.cont_layer_norm = nn.LayerNorm2d(n_cont)
-        self.cat_embed = nn.Embedding(vocab_size=65, embed_size=16)
+        # use the same embedding dimension as the transformer for compatibility
+        self.cat_embed = nn.Embedding(vocab_size=65, embed_size=32)
 
     def forward(self, x: Tensor, indices: List[int]) -> Tensor:
         """
